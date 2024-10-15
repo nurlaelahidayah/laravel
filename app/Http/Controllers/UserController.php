@@ -40,6 +40,14 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
+            // Cek apakah email sudah terdaftar
+        if (User::where('email', $request->email)->exists()) {
+            alert()->error('Gagal', 'Email sudah terdaftar.');
+            return back()->withInput();
+        }
+
+
         $user = $request->validate([
             'nama' => 'required',
             'email' => 'required|unique:users',

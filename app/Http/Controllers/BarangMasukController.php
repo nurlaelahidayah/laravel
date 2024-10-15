@@ -89,9 +89,9 @@ class BarangMasukController extends Controller
             }
             // dd($value);
             $dt_produk = Barang::where('id_barang', $id_barang[$key])->first();
-            Barang::where('id_barang', $id_barang[$key])->update([
-                'jumlah' => $dt_produk->jumlah + $jumlah[$key]
-            ]);
+            // Barang::where('id_barang', $id_barang[$key])->update([
+            //     'jumlah' => $dt_produk->jumlah + $jumlah[$key]
+            // ]);
             BarangMasuk::insert([
                 'kode_bm' => $kode_bm,
                 'kategori_id' => $kategori_id[$key],
@@ -184,17 +184,17 @@ class BarangMasukController extends Controller
             //$barang = Barang::findOrFail($request->barang_id);
 
             // Hitung selisih jumlah
-            $selisih = $request->jumlah - $barang_masuk->jumlah;
+           // $selisih = $request->jumlah - $barang_masuk->jumlah;
             // Cek apakah selisih tidak membuat jumlah menjadi negatif
-            if ($barang->jumlah - $selisih < 0) {
-            return redirect()->back()->withErrors(['jumlah' => 'Jumlah tidak boleh negatif.']);
-            }
+          //  if ($barang->jumlah - $selisih < 0) {
+            //return redirect()->back()->withErrors(['jumlah' => 'Jumlah tidak boleh negatif.']);
+            //}
 
 
         // Update jumlah barang di tabel barang
-        $barang->update([
-        'jumlah' => $barang->jumlah + $selisih
-        ]);
+        //$barang->update([
+        ///'jumlah' => $barang->jumlah + $selisih
+        //]);
 
         // Hitung total pengeluaran baru
         $tot_pengeluaran = $request->harga * $request->jumlah;
@@ -235,9 +235,9 @@ class BarangMasukController extends Controller
         // Ambil data barang terkait berdasarkan nama barang
         $barang = Barang::where('nama', $barang_masuk->nama)->firstOrFail();
         // Kembalikan jumlah barang ke stok
-        $barang->update([
-        'jumlah' => $barang->jumlah - $barang_masuk->jumlah // Mengurangi jumlah barang masuk dari stok
-        ]);
+      //  $barang->update([
+       // 'jumlah' => $barang->jumlah - $barang_masuk->jumlah // Mengurangi jumlah barang masuk dari stok
+        //]);
 
          // Hapus data barang masuk
         $barang_masuk->delete();

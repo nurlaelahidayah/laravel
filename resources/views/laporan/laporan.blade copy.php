@@ -11,7 +11,7 @@
                 <strong>Cetak Laporan Barang Masuk Dan Keluar</strong>
             </div>
             <div class="card-body card-block">
-                <form id="formLaporan" action="{{ route('cetak_laporan') }}" method="GET" target="_blank">
+                <form action="{{ route('cetak_laporan') }}" method="POST">
                     @csrf
                     <div class="form-row">
                         <div class="form-group col-md-6">
@@ -33,7 +33,7 @@
                             </select>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-sm btn-primary" onclick="cetakLaporan()">Cetak</button>
+                    <button type="submit" class="btn btn-sm btn-primary">Cetak</button>
                 </form>
             </div>
         </div>
@@ -47,7 +47,7 @@
                 <strong>Cetak Rekapitulasi Barang Keluar</strong>
             </div>
             <div class="card-body card-block">
-                <form id="formRekapitulasi" action="{{ route('cetak_laporan_uk') }}" method="GET" target="_blank">
+                <form action="{{ route('cetak_laporan_uk') }}" method="POST">
                     @csrf
                     <div class="form-row">
                         <div class="form-group col-md-6">
@@ -73,21 +73,9 @@
                         </div>
                                     
                     </div>
-                    <button type="submit" class="btn btn-sm btn-primary" onclick="cetakRekapitulasi()">Cetak</button>
+                    <button type="submit" class="btn btn-sm btn-primary">Cetak</button>
             </div>
         </div>
     </div>
 </div>
-
-
-<script>
-    function cetakLaporan() {
-        document.getElementById('formLaporan').submit();
-    }
-
-    function cetakRekapitulasi() {
-        document.getElementById('formRekapitulasi').submit();
-    }
-</script>
-
 @endsection

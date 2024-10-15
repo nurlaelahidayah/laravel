@@ -40,7 +40,13 @@
                                 <td>{{ $item->kategori->kategori }}</td>
                                 <td>{{ $item->pemasok->nama }}</td>
                                 <td>{{ $item->nama }}</td>
-                                <td>{{ number_format($item->jumlah) }} {{ $item->satuan }}</td>
+                                <td>@if ($item->stok)
+                                        {{ number_format($item->stok->jumlah) }}
+                                    @else
+                                        {{ 0 }}
+                                    @endif
+                                    {{ $item->satuan }}
+                                </td>
                                 <td>Rp. {{ number_format($item->harga_ambil) }}</td>
                                 <td><img src="{{ asset('Image/'.$item->gambar) }}" alt=""></td>
                                 <td>

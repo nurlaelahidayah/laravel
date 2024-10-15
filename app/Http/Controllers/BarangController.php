@@ -14,7 +14,19 @@ class BarangController extends Controller
     public function index()
     {
         $barang = Barang::all();
+        // $barang = DB::table('barang')
+        //     ->select('barang.*', 'stok.stok')
+        //     ->join('stok', 'stok.id_barang', '=', 'barang.id_barang')
+        //     ->get();
         return view('barang.dftBarang', compact('barang'));
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->get('query');
+        $barang = Barang::where('nama', 'LIKE', "%{$query}%")->get();
+     
+        return response()->json($barang);
     }
 
     public function create()
@@ -44,7 +56,7 @@ class BarangController extends Controller
             'kode_barang' => 'required',
             'kategori_id' => 'required',
             'pemasok_id' => 'required',
-            'nama' =>'required',
+            'nama' =>'required|unique:barang',
             'satuan' => 'required',
             'harga_ambil' => 'required',
             'gambar' => 'required|mimes:jpg,jpeg,png'
@@ -59,7 +71,7 @@ class BarangController extends Controller
          $barang->kategori_id = $request->kategori_id;
          $barang->pemasok_id = $request->pemasok_id;
          $barang->nama = $request->nama;
-         $barang->jumlah = 0;
+         //$barang->jumlah = 0;
          $barang->satuan = $request->satuan;
          $barang->harga_ambil = $request->harga_ambil;
          $barang->gambar = $namaFile;

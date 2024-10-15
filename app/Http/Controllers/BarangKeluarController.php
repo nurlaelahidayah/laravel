@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\Stok;
 use App\Models\BarangKeluar;
 use App\Models\Pegawai;
 use Carbon\Carbon;
@@ -16,6 +17,9 @@ class BarangKeluarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
+
     public function index()
     {
         $barang_keluar = BarangKeluar::all();
@@ -27,10 +31,23 @@ class BarangKeluarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        $barang = Barang::all();
-        $pegawai = Pegawai::all();
+    public function create(Request $request)
+    {   
+
+        //$searchBarang = $request->input('search_barang');
+        //$searchPegawai = $request->input('search_pegawai');
+        //$barang = Barang::all();
+        $barang = Barang::orderBy('nama', 'asc')
+        //->when($searchBarang, function ($query, $searchBarang) {
+          //  return $query->where('nama', 'like', '%' . $searchBarang . '%');
+        //})
+        ->get();
+        //$pegawai = Pegawai::all();
+        $pegawai = Pegawai::orderBy('nama_pegawai', 'asc')
+        //->when($searchPegawai, function ($query, $searchPegawai) {
+          //  return $query->where('nama_pegawai', 'like', '%' . $searchPegawai . '%');
+        //})
+        ->get();
 
         $thn = Carbon::now()->year;
         $var = 'BK';
@@ -49,10 +66,13 @@ class BarangKeluarController extends Controller
 
     public function get_barang($id)
     {
-        $data_bk = Barang::where('id_barang', $id)->first();
+        $data_bk = Barang::where('id_barang', $id)->with('stok')->first();
+      
 
         return response()->json([
             'data_bk' => $data_bk,
+            'jumlah_stok' => $data_bk ? $data_bk->stok->jumlah : 0, // Mengambil jumlah dari stok, jika ada
+        
         ]);
 
         // return view('barang.barang keluar.tbhBarangKeluar', compact('kode_bk', 'barang', 'pegawai', 'id', 'jml_barang'));
@@ -87,18 +107,13 @@ class BarangKeluarController extends Controller
     foreach ($id_barang as $key => $value) {
         if ($jumlah[$key] > 0) { 
             
-            $dt_barang = Barang::find($value);
+             $dt_barang = Stok::find($value);
 
             // Cek apakah jumlah yang diminta melebihi stok
-            if ($jumlah[$key] > $dt_barang->jumlah) {
-                alert()->error('Gagal', 'Jumlah Barang Melebihi Stok Barang.');
-                return back();
-            }
-
-            // Update jumlah barang di tabel barang
-            $dt_barang->update([
-                'jumlah' => $dt_barang->jumlah - $jumlah[$key]
-            ]);
+             if ($jumlah[$key] > $dt_barang->jumlah) {
+                 alert()->error('Gagal', 'Jumlah Barang Melebihi Stok Barang.');
+                 return back();
+             }
 
             // Simpan record barang keluar
             BarangKeluar::create([
@@ -109,6 +124,11 @@ class BarangKeluarController extends Controller
                 'satuan' => $satuan[$key],
                 'tanggal' => $tgl,
             ]);
+            
+            // Update jumlah barang di tabel barang
+            // $dt_barang->update([
+            //     'jumlah' => $dt_barang->jumlah - $jumlah[$key]
+            // ]);
         }
     }
 
@@ -165,12 +185,28 @@ class BarangKeluarController extends Controller
             $barang = Barang::findOrFail($request->barang_id);
 
             // Hitung selisih jumlah
-            $selisih = $request->jumlah - $barang_keluar->jumlah;
+         //   $selisih = $request->jumlah - $barang_keluar->jumlah;
 
             // Update jumlah barang di tabel barang
-            $barang->update([
-                'jumlah' => $barang->jumlah - $selisih
-            ]);
+          //  $barang->update([
+            //    'jumlah' => $barang->jumlah - $selisih
+            //]);
+
+
+            // Ambil data barang keluar yang ada
+            $barang_keluar = BarangKeluar::findOrFail($id);
+            $barang = Barang::findOrFail($request->barang_id);
+
+            // Ambil data stok untuk barang yang dipilih
+            $stok = Stok::where('id_barang', $request->barang_id)->first();
+
+            // Cek apakah stok ada dan cukup
+            if ($stok && $request->jumlah > $stok->jumlah)
+             {
+                // Jika jumlah yang ingin diupdate melebihi stok
+                alert()->error('Gagal', 'Stok tidak mencukupi!');
+                return back()->withInput();
+            }   
  
          
          DB::table('barang_keluar')->where('id_barang_keluar', $id)->update($validate);
@@ -204,9 +240,9 @@ class BarangKeluarController extends Controller
         $barang = Barang::findOrFail($barang_keluar->barang_id);
 
         // Kembalikan jumlah barang ke stok
-        $barang->update([
-            'jumlah' => $barang->jumlah + $barang_keluar->jumlah // Menambahkan jumlah barang keluar ke stok
-        ]);
+       // $barang->update([
+         //   'jumlah' => $barang->jumlah + $barang_keluar->jumlah // Menambahkan jumlah barang keluar ke stok
+        //]);
 
         // Hapus data barang keluar
         $barang_keluar->delete();

@@ -14,6 +14,8 @@
                 @foreach ($barang_keluar as $item)
                 <form action="/edtBarangKeluar/{{ $item->id_barang_keluar }}" method="POST" enctype="multipart/form-data">
                     @csrf   
+
+
                   
                     <div class="form-row">
                         <div class="form-group col-md-6">

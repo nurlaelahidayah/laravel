@@ -69,6 +69,8 @@ Route::middleware(['user'])->group(function () {
     Route::get('/edtBarang/{id}', [BarangController::class, 'edit']);
     Route::post('/edtBarang/{id}', [BarangController::class, 'update']);
 
+    //Route::get('/search-barang', [BarangController::class, 'search'])->name('search.barang');
+
     Route::get('/barang_masuk', [BarangMasukController::class, 'index']);
     Route::get('/tbhBarang_masuk', [BarangMasukController::class, 'create']);
     Route::get('/list/{id}', [BarangMasukController::class, 'get_barang']);
@@ -96,7 +98,10 @@ Route::middleware(['user'])->group(function () {
 
 
     Route::get('/laporan', [DashboardController::class, 'laporan']);
-    Route::post('/laporan', [DashboardController::class, 'cetak_laporan'])->name('cetak_laporan');
-    Route::post('/laporan_uk', [DashboardController::class, 'cetak_laporan_uk'])->name('cetak_laporan_uk');
+    //Route::post('/laporan', [DashboardController::class, 'cetak_laporan'])->name('cetak_laporan');
+    //Route::post('/laporan_uk', [DashboardController::class, 'cetak_laporan_uk'])->name('cetak_laporan_uk');
+    Route::get('/laporan_ctk', [DashboardController::class, 'cetak_laporan'])->name('cetak_laporan');
+    Route::get('/laporan_uk', [DashboardController::class, 'cetak_laporan_uk'])->name('cetak_laporan_uk');
    
+    
 });

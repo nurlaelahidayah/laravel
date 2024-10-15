@@ -19,15 +19,17 @@
                             <input type="text" class="form-control" id="kode_bk" name="kode_bk" value="{{ $kode_bk }}"
                                 readonly>
                         </div>
-                        <div class="form-group col-md-4">
-                            <label for="nama_pegawai">Nama Pegawai</label>
-                            <select id="nama_pegawai" name="nama_pegawai" class="form-control">
-                                <option selected>Pilih Pegawai...</option>
-                                @foreach ($pegawai as $item)
-                                <option value="{{ $item->id_pegawai }}">{{ $item->nama_pegawai }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <!-- Dropdown Pilih Pegawai -->
+<div class="dropdown">
+  <button type="button" onclick="myFunctionPegawai()" class="dropbtn">Pilih Pegawai</button>
+  <div id="myDropdownPegawai" class="dropdown-content">
+    <input type="text" placeholder="Cari Pegawai..." id="myInputPegawai" onkeyup="filterFunctionPegawai()">
+    @foreach ($pegawai as $item)
+      <a href="#" onclick="pegawai_id('{{ $item->id_pegawai }}'); event.preventDefault();">{{ $item->nama_pegawai }}</a>
+    @endforeach
+  </div>
+</div>
+
                         <div class="form-group col-md-4">
                             <label for="tgl_keluar">Tanggal Keluar</label>
                             <input type="date" class="form-control" id="tgl_keluar" name="tgl_keluar">
@@ -78,6 +80,10 @@ function myFunction() {
   document.getElementById("myDropdown").classList.toggle("show");
 }
 
+function myFunctionPegawai() {
+  document.getElementById("myDropdownPegawai").classList.toggle("show");
+}
+
 function filterFunction() {
   const input = document.getElementById("myInput");
   const filter = input.value.toUpperCase();
@@ -91,6 +97,27 @@ function filterFunction() {
       a[i].style.display = "none";
     }
   }
+}
+
+function filterFunctionPegawai() {
+  const input = document.getElementById("myInputPegawai");
+  const filter = input.value.toUpperCase();
+  const div = document.getElementById("myDropdownPegawai");
+  const a = div.getElementsByTagName("a");
+  for (let i = 0; i < a.length; i++) {
+    const txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+
+function pegawai_id(id_pegawai) {
+    // Logika untuk menangani pemilihan pegawai
+    console.log("Pegawai ID yang dipilih: " + id_pegawai);
+    // Tambahkan logika Anda di sini untuk menangani pemilihan pegawai
 }
 
 function barang_id(id_barang) {
@@ -112,7 +139,7 @@ function barang_id(id_barang) {
                         <input type="hidden" value="${data.data_bk.id_barang}" id="id_barang[]" name="id_barang[]">
                     </td>
                     <td>${data.data_bk.nama}</td>
-                    <td>${data.jumlah_stok} ${data.data_bk.satuan}</td>
+                    <td>${data.data_bk.jumlah} ${data.data_bk.satuan}</td>
                     <td>
                         <input type="number" value="0" min="0" class="form-control" id="jml[]" name="jml[]">
                         <input type="hidden" value="${data.data_bk.satuan}" id="satuan[]" name="satuan[]">
@@ -124,7 +151,7 @@ function barang_id(id_barang) {
             `;
 
             document.querySelector('.isi').insertAdjacentHTML('beforeend', nilai);
-            // Reset dropdown dan input pencarian setelah barang ditambahkan
+            // Reset input pencarian setelah barang ditambahkan
             resetDropdownAndSearch();
         })
         .catch(error => {
@@ -283,42 +310,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <style>
 .dropbtn {
-  background-color: transparent; /* Mengubah warna latar belakang menjadi transparan */
-  color: #04AA6D; /* Warna teks tombol */
+  background-color: #04AA6D; /* Warna tombol */
+  color: white;
   padding: 16px;
   font-size: 16px;
-  border: 1px solid #04AA6D; /* Tambahkan border untuk membedakan tombol */
+  border: none;
   cursor: pointer;
 }
 
-
 .dropbtn:hover, .dropbtn:focus {
-  background-color: #3e8e41;
+  background-color: #3e8e41; /* Warna saat hover */
 }
 
-#myInput {
+#myInput, #myInputPegawai {
   box-sizing: border-box;
   background-image: url('searchicon.png');
   background-position: 14px 12px;
@@ -329,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
   border-bottom: 1px solid #ddd;
 }
 
-#myInput:focus {outline: 3px solid #ddd;}
+#myInput:focus, #myInputPegawai:focus {outline: 3px solid #ddd;}
 
 .dropdown {
   position: relative;
@@ -357,6 +363,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 .show {display: block;}
 </style>
+
 
 
 @endsection
