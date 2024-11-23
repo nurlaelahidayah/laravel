@@ -13,6 +13,15 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+
+    public function cetakStok()
+                {
+                     $barang = Barang::with(['kategori', 'pemasok', 'stok'])->get(); // Ambil data barang
+                     
+                     // Menggunakan view untuk mencetak
+                  return view('barang.cetakStok', compact('barang'));
+                }
+           
     public function index()
     {
         $barang = Barang::count('id_barang');
@@ -64,7 +73,15 @@ class DashboardController extends Controller
             return $pdf->stream('Laporan Barang Masuk.pdf');
         } else {
             $data_keluar = BarangKeluar::where('tanggal', '>=', $dari)
-                        ->where('tanggal', '<=', $sampai)->get();
+                        ->where('tanggal', '<=', $sampai)
+                        
+                        ->with('barang') // Mengambil relasi barang
+                        ->get();
+
+        // Mengambil harga dari tabel barang
+        foreach ($data_keluar as $item) {
+            $item->harga = $item->barang->harga_ambil; // Asumsi 'harga_ambil' adalah kolom harga di tabel barang
+        }
             $pdf = PDF::loadView('laporan.laporanBk', compact('data_keluar', 'dari', 'sampai'))->setPaper('A4', 'landscape');
             return $pdf->stream('Laporan Barang Keluar.pdf');
         }
@@ -127,8 +144,9 @@ class DashboardController extends Controller
         // Memuat view PDF
                  $pdf = PDF::loadView('laporan.laporanBkuk', compact('data_keluar', 'dari', 'sampai', 'email'))->setPaper('A4', 'landscape');
                      return $pdf->stream('Laporan Barang Keluar.pdf');
+        
 
-           
+        
     }
 }
 

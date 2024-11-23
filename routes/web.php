@@ -103,5 +103,5 @@ Route::middleware(['user'])->group(function () {
     Route::get('/laporan_ctk', [DashboardController::class, 'cetak_laporan'])->name('cetak_laporan');
     Route::get('/laporan_uk', [DashboardController::class, 'cetak_laporan_uk'])->name('cetak_laporan_uk');
    
-    
+    Route::get('/cetak-stok', [DashboardController::class, 'cetakStok'])->name('cetakStok');
 });

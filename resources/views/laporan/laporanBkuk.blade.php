@@ -93,7 +93,7 @@
 
     <center>
         <img src="images/kantor.png" alt="">
-        <h5>Inventori Barang Dinas Kependudukan dan Pencatatan Sipil Kab. Tegal
+        <h5>Persediaan Barang Dinas Kependudukan dan Pencatatan Sipil Kab. Tegal
             <br>Rekapitulasi Barang Keluar</h4><br>
             <h6>Tanggal : {{ date('d-M-Y', strtotiMe($dari)) }} -
                 {{ date('d-M-Y', strtotime($sampai)) }}

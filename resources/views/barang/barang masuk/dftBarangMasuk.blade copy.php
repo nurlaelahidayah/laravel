@@ -1,28 +1,17 @@
 @extends('layout.main')
 
-@section('barang_masuk', 'active')
+@section('barang_masuk' , 'active')
 
 @section('content')
 
 <style>
     div.dataTables_wrapper {
-        width: 100%; /* Mengatur lebar wrapper menjadi 100% */
+        width: 980px;
         margin: 0 auto;
     }
 
-    table {
-        width: 100%; /* Mengatur lebar tabel menjadi 100% */
-    }
-
-    th, td {
-        text-align: center; /* Menyelaraskan teks di tengah */
-        vertical-align: middle; /* Menyelaraskan vertikal di tengah */
-    }
-
-    .table-responsive {
-        overflow-x: auto; /* Menambahkan scroll horizontal jika diperlukan */
-    }
 </style>
+
 
 <div class="row">
     <div class="col-md-12">
@@ -36,22 +25,22 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Kode Kategori</th>
+                                <th>Kategori</th>
                                 <th>Supplier</th>
                                 <th>Nama Barang</th>
                                 <th>Harga</th>
                                 <th>Jumlah</th>
                                 <th>Total Anggaran</th>
                                 <th>Tanggal Masuk</th>
-                                <th></th>
-                            </tr>
-                        </thead>
+                                
+                    </tr>
+                    </thead>
                         <tbody>
                             @foreach ($barang_masuk as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->kategori->kategori }}</td>
-                                <td>{{ $item->pemasok->nama }}</td>
+                               <td>{{ $item->kategori->kategori }}</td>
+                               <td>{{ $item->pemasok->nama }}</td>
                                 <td>{{ $item->nama }}</td>
                                 <td>Rp. {{ number_format($item->harga) }}</td>
                                 <td>{{ number_format($item->jumlah) }} {{ $item->satuan }}</td>
@@ -62,21 +51,21 @@
                                     <a href="/edtBarangMasuk/{{ $item->id_barang_masuk }}" class="btn btn-sm btn-success"><i
                                             class="fa fa-pencil-square-o"></i></a>
                                     <form action="{{ route('hpsBarangMasuk', $item->id_barang_masuk) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">
                                             <i class="fa fa-trash"></i></button>
                                     </form>
                                     @endif
                                 </td>
                             </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection
 

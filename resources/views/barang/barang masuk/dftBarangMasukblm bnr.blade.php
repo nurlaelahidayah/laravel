@@ -4,26 +4,6 @@
 
 @section('content')
 
-<style>
-    div.dataTables_wrapper {
-        width: 100%; /* Mengatur lebar wrapper menjadi 100% */
-        margin: 0 auto;
-    }
-
-    table {
-        width: 100%; /* Mengatur lebar tabel menjadi 100% */
-    }
-
-    th, td {
-        text-align: center; /* Menyelaraskan teks di tengah */
-        vertical-align: middle; /* Menyelaraskan vertikal di tengah */
-    }
-
-    .table-responsive {
-        overflow-x: auto; /* Menambahkan scroll horizontal jika diperlukan */
-    }
-</style>
-
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -31,10 +11,9 @@
                 <strong class="card-title">Daftar Barang Masuk</strong>
             </div>
             <div class="card-body">
-                <div class="table-responsive">
-                    <table id="bootstrap-data-table" class="table table-striped table-bordered display nowrap">
-                        <thead>
-                            <tr>
+            <table id="bootstrap-data-table" class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
                                 <th>No</th>
                                 <th>Kode Kategori</th>
                                 <th>Supplier</th>
@@ -43,9 +22,10 @@
                                 <th>Jumlah</th>
                                 <th>Total Anggaran</th>
                                 <th>Tanggal Masuk</th>
-                                <th></th>
-                            </tr>
-                        </thead>
+                                
+                    </tr>
+                    
+                    </thead>
                         <tbody>
                             @foreach ($barang_masuk as $item)
                             <tr>
@@ -62,31 +42,29 @@
                                     <a href="/edtBarangMasuk/{{ $item->id_barang_masuk }}" class="btn btn-sm btn-success"><i
                                             class="fa fa-pencil-square-o"></i></a>
                                     <form action="{{ route('hpsBarangMasuk', $item->id_barang_masuk) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger";">
                                             <i class="fa fa-trash"></i></button>
                                     </form>
                                     @endif
                                 </td>
                             </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        @endforeach
+                    </tbody>
+            </table>
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection
 
 @section('table')
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#bootstrap-data-table').DataTable({
-            "paging": true, // Mengaktifkan pagination
-            "searching": true // Mengaktifkan pencarian
-        });
+        $('#bootstrap-data-table-export').DataTable();
     });
+
 </script>
 @endsection

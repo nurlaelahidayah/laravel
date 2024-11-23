@@ -71,7 +71,7 @@ class BarangKeluarController extends Controller
 
         return response()->json([
             'data_bk' => $data_bk,
-            'jumlah_stok' => $data_bk ? $data_bk->stok->jumlah : 0, // Mengambil jumlah dari stok, jika ada
+            'jumlah_stok' => $data_bk->stok ? $data_bk->stok->jumlah : 0, // Mengambil jumlah dari stok, jika ada
         
         ]);
 
@@ -108,12 +108,13 @@ class BarangKeluarController extends Controller
         if ($jumlah[$key] > 0) { 
             
              $dt_barang = Stok::find($value);
+             
 
             // Cek apakah jumlah yang diminta melebihi stok
-             if ($jumlah[$key] > $dt_barang->jumlah) {
-                 alert()->error('Gagal', 'Jumlah Barang Melebihi Stok Barang.');
-                 return back();
-             }
+           //  if ($jumlah[$key] > $dt_barang->jumlah) {
+             //    alert()->error('Gagal', 'Jumlah Barang Melebihi Stok Barang.');
+               //  return back();
+             //}
 
             // Simpan record barang keluar
             BarangKeluar::create([

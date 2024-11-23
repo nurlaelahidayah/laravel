@@ -52,6 +52,7 @@
         </div>
     </div>
 </div>
+
 @endsection
 
 @section('table')

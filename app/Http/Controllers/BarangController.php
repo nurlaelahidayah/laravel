@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+//use App\Models\Stok;
 use App\Models\Kategori;
 use App\Models\Pemasok;
 use Carbon\Carbon;
@@ -11,16 +12,18 @@ use Illuminate\Support\Facades\DB;
 
 class BarangController extends Controller
 {
-    public function index()
-    {
-        $barang = Barang::all();
-        // $barang = DB::table('barang')
-        //     ->select('barang.*', 'stok.stok')
-        //     ->join('stok', 'stok.id_barang', '=', 'barang.id_barang')
-        //     ->get();
+     public function index()
+     {
+         $barang = Barang::all();
+     
+          //$barang = DB::table('barang')
+        //->select('barang.*', 'stok.stok')
+        //->join('stok', 'stok.id_barang', '=', 'barang.id_barang')
+        //->get();
         return view('barang.dftBarang', compact('barang'));
-    }
+     }
 
+    
     public function search(Request $request)
     {
         $query = $request->get('query');

@@ -4,7 +4,7 @@
 <head>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <title>Sistem Inventori Barang</title>
+    <title>Sistem Persediaan Barang</title>
     <link rel="apple-touch-icon" href="{{ asset('images/kantor.png') }}">
     <link rel="shortcut icon" href="{{ asset('images/kantor.png') }}">
     <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' rel='stylesheet'>
@@ -195,7 +195,7 @@
                         <div class="row px-3 justify-content-center mt-3 mb-2 border-line"> <img
                             src="{{ asset('images/kantor.png') }}" class="image"> </div>
                             <div class="row justify-content-center text-center pb-0 pt-2 border-line">
-                                <h4><b>Sistem Inventori Barang</b><br>
+                                <h4><b>Sistem Persediaan Barang</b><br>
                                     <b>Dinas Kependudukan dan Pencatatan Sipil</b><br>
                                     <b>Kabupaten Tegal</b></h4>
                                 </div>

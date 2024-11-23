@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Laporan Rekapitulasi</title>
+    <title>Stok Barang</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -11,16 +11,19 @@
     <style type="text/css">
         table tr td {
             font-size: 12pt;
+            font-weight: bold;
         }
 
         table thead tr th {
             text-align: center;
             font-size: 11pt;
+            font-weight: bold;
         }
 
         .total th {
             font-size: 11pt;
             color: red;
+            font-weight: bold;
         }
 
         hr {
@@ -42,6 +45,7 @@
         }
         .penandatangan p {
             margin: 0; /* Menghilangkan spacing pada paragraf */
+            font-weight: bold; 
         }
         .underline {
             text-decoration: underline; /* Menambahkan garis bawah */
@@ -93,38 +97,40 @@
 
     <center>
         <img src="images/kantor.png" alt="">
-        <h5>Persediaan Barang Dinas Kependudukan dan Pencatatan Sipil Kab. Tegal
-            <br>Laporan Barang Keluar</h4><br>
-            <h6>Tanggal : {{ date('d-M-Y', strtotiMe($dari)) }} -
-                {{ date('d-M-Y', strtotime($sampai)) }}
+        <h5><strong>Persediaan Barang Dinas Kependudukan dan Pencatatan Sipil Kab. Tegal</strong>
+            <br><strong>Laporan Stok Barang</strong></h4><br>
+           
         </h5>
     </center>
     <hr>
 
     <table class='table table-bordered'>
-        <thead>
+    <thead>
             <tr>
                 <th>No</th>
-                <th>Kode Barang </th>
-                <th>Nama Pegawai</th>
+                <th>Kode Barang</th>
+                <th>Kategori</th>
+                <th>Supplier</th>
                 <th>Nama Barang</th>
-                <th>Harga</th>
                 <th>Jumlah</th>
-                <th>Total Harga</th>
-                <th>Tanggal</th>
+                <th>Harga Beli</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($data_keluar as $item)
+            @foreach ($barang as $item)
             <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ $item->kode_bk }}</td>
-                <td>{{ $item->pegawai->nama_pegawai }}</td>
-                <td>{{ $item->barang->nama }}</td>
-                <td>Rp. {{ number_format($item->harga) }}</td>
-                <td>{{ $item->jumlah }} {{ $item->satuan }}</td>
-                <td>Rp. {{ number_format($item->jumlah * $item->harga) }}</td>
-                <td>{{ $item->tanggal }}</td>
+                <td>{{ $item->kode_barang }}</td>
+                <td>{{ $item->kategori->kategori }}</td>
+                <td>{{ $item->pemasok->nama }}</td>
+                <td>{{ $item->nama }}</td>
+                <td>@if ($item->stok)
+                        {{ number_format($item->stok->jumlah) }}
+                    @else
+                        {{ 0 }}
+                    @endif
+                </td>
+                <td>Rp. {{ number_format($item->harga_ambil) }}</td>
             </tr>
             @endforeach
         </tbody>
@@ -162,3 +168,5 @@
 </body>
 
 </html>
+
+  
